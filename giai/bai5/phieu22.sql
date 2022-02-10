@@ -89,7 +89,58 @@ end
 select * from dbo.fc_cau3('tin1')
 
 --4
+create function fc_cau4(@tensv nvarchar(50))
+returns @thongke table(
+   tensv nvarchar(50),
+   tenphong nvarchar(50)
+)
+as
+begin
+     insert @thongke
+	 select tensv,tenlop
+	 from sv inner join lop on sv.malop=lop.malop
+	 where tensv=@tensv
+	 return
+end
+select * from dbo.fc_cau4('A')
 
+--5
+create function fc_cau5(@phong int)
+returns @thongke table(
+   masv char(50),
+   tensv nvarchar(50),
+   tenlop nvarchar(50)
+)
+as
+begin
+   if (exists (select malop from lop where phong=@phong) )
+      insert @thongke
+      select masv,tensv,tenlop
+	  from sv inner join lop on sv.malop=lop.malop
+	  where phong=@phong
+   else
+      insert @thongke
+      select masv,tensv,tenlop
+	  from sv inner join lop on sv.malop=lop.malop
+	  return
+end
+select * from dbo.fc_cau5(1)
 
-
+--6
+create function fc_cau6(@phong int)
+returns int
+as
+begin 
+   declare @sl int
+   if (exists (select phong from lop where phong=@phong))
+      select @sl=count(malop)
+	  from lop
+	  where phong=@phong
+	  group by phong
+   else
+       set @sl=0
+	return @sl
+end
+drop function fc_cau6
+select dbo.fc_cau6(2)
 
