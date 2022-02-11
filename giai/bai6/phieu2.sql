@@ -143,4 +143,3 @@ select * from view_k
 
 
 
-

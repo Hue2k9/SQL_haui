@@ -14,6 +14,7 @@ insert nhap values
 ('n1','vt01',1,100,'2022-02-11'),
 ('n2','vt01',1,200,'2022-01-07')
 insert xuat values
+('x3','vt01',1,70,'2022-10-09'),
 ('x2','vt01',1,90,'2022-01-10'),
 ('x1','vt02',1,80,'2022-01-09')
 
@@ -30,10 +31,9 @@ alter table xuat nocheck constraint all
 
 --e
 update xuat 
-from nhap
-set ngayx=ngayn
-
-
+set xuat.ngayx=nhap.NgayX
+from xuat inner join nhap on xuat.MaVT=nhap.mavt
+where xuat.NgayX<nhap.NgayX
 select * from xuat
 
 
